@@ -8,7 +8,7 @@ class Fighter:
         self._name = name
         self._description = description
         self._agility = randrange(1,9)
-        self._healthpoints = 100 # Lors de la création d'une instance, les points de vie valent 100.
+        self._healthpoints = 200 # Lors de la création d'une instance, les points de vie valent 100.
         self._weapon = None
         
     def get_name(self):
@@ -54,19 +54,13 @@ class Fighter:
         """
         return self._weapon
     
-    def set_weapon(self, a_weapon):
-        """
-        donne une arme au combattant
-        """
-        self._weapon = a_weapon
-    
     def take_weapon(self, weapon):
         """
         donne une arme au  combattant
         """
         if weapon._owner == None:
-            self.set_weapon(weapon)
-            weapon.set_owner(self)
+            self._weapon = weapon
+            weapon._owner = self
             return self.get_weapon()
         else:
             return None
@@ -75,6 +69,7 @@ class Fighter:
         """
         le combattant utilise son arme pour tirer sur un autre combattant
         """
+        print (fighter.get_name(),fighter._healthpoints)
         return self.get_weapon().shoot(fighter)
         
     
@@ -84,7 +79,13 @@ class Fighter:
         """
         points=int(uniform(0.7,1.0)*10*self.get_strength()/fighter.get_agility())
         fighter._healthpoints -= points
-        print (fighter._healthpoints)
+        print (fighter.get_name(),fighter._healthpoints)
+    
+    def __repr__(self):
+        """
+        méthode spéciale qui represente le fighter
+        """
+        return ', '.join([self.get_name(),self.get_description()])
     
     def summary(self):
         """
@@ -92,9 +93,9 @@ class Fighter:
         """
         resume = "nom: " + self.get_name() + "\n"
         resume += "description: " + self.get_description()+ "\n"
-        resume += "point de vie: " + self.get_healthpoints()+ "\n"
-        resume += "agilité: " + self.get_agility()+ "\n"
-        resume += "force: " + self.get_strength()+ "\n"
+        resume += "point de vie: " + str(self.get_healthpoints())+ "\n"
+        resume += "agilité: " + str(self.get_agility())+ "\n"
+        resume += "force: " + str(self.get_strength())+ "\n"
         return resume
 
 class Weapon:
@@ -140,12 +141,6 @@ class Weapon:
         """
         return self._owner
     
-    def set_owner(self,a_fighter):
-        """
-        Donne l'arme au combattant
-        """
-        self._owner = a_fighter
-    
     def shoot(self, fighter):
         """
         un combattant tire sur un autre combattant avec l'arme et lui enlève des pv
@@ -157,7 +152,7 @@ class Weapon:
             fighter._healthpoints -= points
             return points
         elif ammo <= 0:
-            return"nothing happened"
+            return 0
     
     
     

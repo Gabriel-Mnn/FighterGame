@@ -1,33 +1,70 @@
+from fighter_game.fighter import Fighter, Weapon
+
+
+
 class FighterManager:
     """
     la classe permettant les combats entre combattant
     """
+    def __init__(self):
+        self._fighters = []
+        self._weapons = []
     
-    def create_fighter(name):
+    def create_fighter(self, name, description):
         """
         créé un nouveau combattant
         """
-        name = Fighter(name,'')
-        return name.summary()
+        name = Fighter(name, description)
+        return name
     
-    def create_weapon(name):
+    def create_weapon(self, name, power):
         """
-        créé un nouveau combattant
+        créé une nouvelle arme
         """
-        name = Weapon(name)
-        return name.summary()
+        name = Weapon(name, power)
+        return name
     
-    def start_fight(fighter1, fighter2):
+    def _fight(combattant,combattu):
+        """
+        le combattant tire ou frappe
+        """
+        pass
+    
+    def start_fight(self, fighter1, weapon1, fighter2, weapon2):
         """
         automatise le combat et retourne le vainqueur
         """
-        while fighter1._healthpoints > 0 and fighter2._healthpoints > 0:
-            fighter1._shoot(fighter2.get_name())
-            fighter2._shoot(fighter1.get_name())
-        if fighter1._healthpoints > 0 and fighter2._healthpoints < 0:
-            return fighter2.get_name()
-        if fighter2._healthpoints > 0 and fighter1._healthpoints < 0:
-            return fighter1.get_name()
-        else:
-            return "draw"
-            
+        fighter1.take_weapon(weapon1)
+        fighter2.take_weapon(weapon2)
+        while fighter1.get_healthpoints() > 0 and fighter2.get_healthpoints() > 0:
+            if weapon1.get_ammo() == 0:
+                fighter1.punch(fighter2)
+            else:
+                fighter1.fighter_shoot(fighter2)
+            if fighter2.get_healthpoints() < 1:
+                weapon2._owner = None
+                fighter2._weapon = None
+                return fighter1
+            if weapon2.get_ammo() == 0:
+                fighter2.punch(fighter1)
+            else:
+                fighter2.fighter_shoot(fighter1)
+            if fighter1.get_healthpoints() < 1:
+                weapon1._owner = None
+                fighter1._weapon = None
+                return fighter2
+        
+        
+        
+manager = FighterManager()
+louis = manager.create_fighter("Louis","")
+ethan = manager.create_fighter("Ethan","")
+pistolet = manager.create_weapon("Pistolet",4)
+bazooka = manager.create_weapon("Bazooka",10)
+
+
+
+
+
+
+
