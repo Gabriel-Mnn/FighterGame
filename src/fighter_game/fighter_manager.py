@@ -15,6 +15,7 @@ class FighterManager:
         créé un nouveau combattant
         """
         name = Fighter(name, description)
+        self._fighters.append(name)
         return name
     
     def create_weapon(self, name, power):
@@ -22,6 +23,7 @@ class FighterManager:
         créé une nouvelle arme
         """
         name = Weapon(name, power)
+        self._weapons.append(name)
         return name
     
     def _fight(combattant,combattu):
@@ -36,25 +38,19 @@ class FighterManager:
         """
         fighter1.take_weapon(weapon1)
         fighter2.take_weapon(weapon2)
-        while fighter1.get_healthpoints() > 0 and fighter2.get_healthpoints() > 0:
-            if weapon1.get_ammo() == 0:
-                fighter1.punch(fighter2)
+        combattant = fighter1
+        combattu = fighter2
+        while combattant.get_healthpoints() > 0 and combattu.get_healthpoints() > 0:
+            if combattant.get_weapon().get_ammo() == 0:
+                combattant.punch(combattu)
             else:
-                fighter1.fighter_shoot(fighter2)
-            if fighter2.get_healthpoints() < 1:
-                weapon2._owner = None
-                fighter2._weapon = None
-                return fighter1
-            if weapon2.get_ammo() == 0:
-                fighter2.punch(fighter1)
-            else:
-                fighter2.fighter_shoot(fighter1)
-            if fighter1.get_healthpoints() < 1:
-                weapon1._owner = None
-                fighter1._weapon = None
-                return fighter2
-        
-        
+                combattant.fighter_shoot(combattu)
+            if combattu.get_healthpoints() < 1:
+                combattu.get_weapon()._owner = None
+                combattu._weapon = None
+                self._fighters.remove(combattu)
+                return combattant
+            combattant, combattu = combattu , combattant #inversion des roles
         
 manager = FighterManager()
 louis = manager.create_fighter("Louis","")

@@ -69,7 +69,7 @@ class Fighter:
         """
         le combattant utilise son arme pour tirer sur un autre combattant
         """
-        print (fighter.get_name(),fighter._healthpoints)
+        print (fighter.get_name(),"Bang!!",fighter._healthpoints)
         return self.get_weapon().shoot(fighter)
         
     
@@ -79,7 +79,7 @@ class Fighter:
         """
         points=int(uniform(0.7,1.0)*10*self.get_strength()/fighter.get_agility())
         fighter._healthpoints -= points
-        print (fighter.get_name(),fighter._healthpoints)
+        print (fighter.get_name(),"Ouch!!",fighter._healthpoints)
     
     def __repr__(self):
         """
@@ -105,7 +105,7 @@ class Weapon:
     def __init__(self, name, damage):
         self._name = name
         self._damage = damage
-        self._ammo = 15-self._damage
+        self._ammo = max (15-self._damage,1)
         self._owner = None
         
     def get_name(self):
@@ -155,6 +155,32 @@ class Weapon:
             return 0
     
     
+class Item:
+    """
+    une class d'un item soignant un nbre de pv pour un nbre d'utilisation
+    """
+    def __init__(self,name,uses):
+        self._name = name
+        self._uses = uses
+        self._heal = randrange(5,25)-uses**2
+        
+    def get_name(self):
+        """
+        donne le nombre d'utilisation de l'objet
+        """
+        return self._name
+    
+    def get_uses(self):
+        """
+        donne le nombre d'utilisation de l'objet
+        """
+        return self._uses
+    
+    def get_heal(self):
+        """
+        donne le nombre d'utilisation de l'objet
+        """
+        return self._heal
     
 pistolet = Weapon('pistolet', 5)    
 marcel = Fighter('Marcel', 'The best one') # on instancie avec les variables de la méthode __init__
