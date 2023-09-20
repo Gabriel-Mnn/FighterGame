@@ -24,41 +24,37 @@ class FighterManager:
         """
         name = Weapon(name, power)
         self._weapons.append(name)
-        return name
-    
-    def _fight(combattant,combattu):
-        """
-        le combattant tire ou frappe
-        """
-        pass
-    
-    def start_fight(self, fighter1, weapon1, fighter2, weapon2):
+        return name        
+        
+        
+        
+    def start_fight(self, combattant, combattu):
         """
         automatise le combat et retourne le vainqueur
         """
-        fighter1.take_weapon(weapon1)
-        fighter2.take_weapon(weapon2)
-        combattant = fighter1
-        combattu = fighter2
-        while combattant.get_healthpoints() > 0 and combattu.get_healthpoints() > 0:
-            if combattant.get_weapon().get_ammo() == 0:
-                combattant.punch(combattu)
-            else:
-                combattant.fighter_shoot(combattu)
-            if combattu.get_healthpoints() < 1:
-                combattu.get_weapon()._owner = None
-                combattu._weapon = None
-                self._fighters.remove(combattu)
-                return combattant
-            combattant, combattu = combattu , combattant #inversion des roles
-        
+        if combattant.get_weapon().get_ammo() > 0:
+            combattant.fighter_shoot(combattu)
+        else:
+            combattant.punch(combattu)
+        if combattu.get_healthpoints() > 0:
+            return self.start_fight(combattu,combattant)
+        else:
+            combattu.get_weapon()._owner = None
+            combattu._weapon = None
+            self._fighters.remove(combattu)
+            return combattant
+            
+            
+           
+           
 manager = FighterManager()
 louis = manager.create_fighter("Louis","")
 ethan = manager.create_fighter("Ethan","")
 pistolet = manager.create_weapon("Pistolet",4)
 bazooka = manager.create_weapon("Bazooka",10)
 
-
+louis.take_weapon(bazooka)
+ethan.take_weapon(pistolet)
 
 
 
