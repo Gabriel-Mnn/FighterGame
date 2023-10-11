@@ -36,8 +36,10 @@ class Queue:
         return the head of the queue without removing it.
         If the queue is empty, raise IndexError exception.
         """
-        elem_copy = self._element.copy()
-        return elem_copy.pop()
+        popped_elem = self._element.pop()
+        self._element.append(popped_elem)
+        return popped_elem
+        
 
     def size(self):
         """
@@ -52,3 +54,6 @@ class Queue:
         """
         warn('This method is deprecated.', DeprecationWarning, stacklevel=2)
         return self.is_empty()
+    
+    def __repr__(self):
+        return str(self._element)
