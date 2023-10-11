@@ -43,8 +43,9 @@ class FighterManager:
         if combattu.get_healthpoints() > 0:
             return self.start_fight(combattu,combattant)
         else:
-            combattu.get_weapon()._owner = None
-            combattu._weapon = None
+            if not combattant.get_weapon() == None:
+                combattu.get_weapon()._owner = None
+                combattu._weapon = None
             self._fighters.remove(combattu)
             return combattant
     
